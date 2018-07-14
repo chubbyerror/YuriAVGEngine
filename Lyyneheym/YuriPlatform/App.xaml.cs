@@ -9,5 +9,5 @@ namespace Yuri
     public partial class App : Application
     {
 
-    }
+    }   
 }

@@ -832,20 +832,21 @@ namespace Yuri.YuriInterpreter
         /// 递归下降，构造语法树并取下一节点
         /// </summary>
         /// <param name="res">母亲节点</param>
-        /// <returns>下一个拿去展开的产生式</returns>
+        /// <returns>下一个拿去展开的产生式左节点</returns>
         private SyntaxTreeNode RecursiveDescent(SyntaxTreeNode res)
         {
             while (true)
             {
-                // 已经没有需要递归下降的节点，否则取她的母亲节点来取得自己的姐妹
+                // 取母亲节点来获取自己的姐妹
                 SyntaxTreeNode parent = res?.Parent;
-                // 如果没有母亲，就说明已经回退到了树的最上层
+                // 如果没有母亲，就说明已经回退到了树的最上层，到达递归边界，结束
                 if (parent?.Children == null) { return null; }
                 int iPtr = 0;
                 // 遍历寻找自己在姐妹中的排位
                 for (; iPtr < parent.Children.Count && parent.Children[iPtr] != res; iPtr++) { }
                 // 跳过自己，找最大的妹妹，如果自己没有妹妹，那就递归去找母亲的妹妹
                 if (iPtr + 1 < parent.Children.Count) { return parent.Children[iPtr + 1]; }
+                // 把找到的序列妹妹当做下一个要展开的节点，递归下降
                 res = parent;
             }
         }
